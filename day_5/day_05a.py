@@ -13,9 +13,9 @@ def islinevalid(data,rules):
         except:
             continue
         if p1_index > p2_index:
-            print("returning False",p1_index,p2_index)
+            #print("returning False",p1_index,p2_index)
             return False  
-    print(data) 
+    #print(data)
     return True         
         
 

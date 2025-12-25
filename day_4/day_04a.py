@@ -32,17 +32,17 @@ lines=[]
 row_count=0
 for line in f:
     tmp_line = list(line.strip().lower())
-    print(f"row {str(row_count).zfill(3)}: {tmp_line}")
+    #print(f"row {str(row_count).zfill(3)}: {tmp_line}")
     lines.append(tmp_line)
     row_count+=1
 num_of_rows=len(lines)
 num_of_cols=len(lines[0])
-print(f"Number of rows: {num_of_rows}")
-print(f"Number of columns: {num_of_cols}")
+#print(f"Number of rows: {num_of_rows}")
+#print(f"Number of columns: {num_of_cols}")
 #find a character at row_i, col_j
 row_i=0 # ie the forth row as the count starts at 0
 col_j=0 # ie the fifth element in that row as the count starts at 0
-print(f"lines[{row_i}, {col_j}]: ={lines[row_i][col_j]}")
+#print(f"lines[{row_i}, {col_j}]: ={lines[row_i][col_j]}")
 
 count_xmas=0
 for row_i in range(num_of_rows):

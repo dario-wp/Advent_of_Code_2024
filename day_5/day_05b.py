@@ -28,7 +28,7 @@ def islinevalid(data,rules):
     if not fixed:
         return 0
     else:
-        print(data)
+        #print(data)
         return int(data[int((len(data)/2))])        
         
 
