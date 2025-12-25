@@ -1,4 +1,3 @@
-
 import re
 
 total = 0
