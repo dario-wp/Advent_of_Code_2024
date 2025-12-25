@@ -65,7 +65,7 @@ with open(filepath) as f:
 
 for line in data:
     row +=1
-    print("row"+str(row)+":"+line.strip())
+    #print("row"+str(row)+":"+line.strip())
     total_data.append(list(line.strip()))
     try:
         player_col = line.index("^")

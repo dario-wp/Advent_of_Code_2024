@@ -46,7 +46,7 @@ def movement(direction,player_col,player_row,total_data):
             if total_data[player_row][player_col] == "#":
                 player_row -=1
                 direction = "left"
-                
+
     elif direction == "left":
         total_data[player_row][player_col] = "L"
         player_col -=1
@@ -56,9 +56,9 @@ def movement(direction,player_col,player_row,total_data):
             if total_data[player_row][player_col] == "#":
                 player_col +=1
                 direction = "up"
-            
+
     return True,direction,player_col,player_row
-                
+
 def movement2(direction,player_col,player_row,total_data,infinite_loop):
     #it goes forward
     if direction == "up":
@@ -91,7 +91,7 @@ def movement2(direction,player_col,player_row,total_data,infinite_loop):
                     infinite_loop +=1
                     #grid(total_data)
                     return False,direction,player_col,player_row,infinite_loop,True
-        
+
         else:
             if total_data[player_row][player_col] == "#":
                 player_col -=1
@@ -101,7 +101,7 @@ def movement2(direction,player_col,player_row,total_data,infinite_loop):
     elif direction == "down":
         total_data[player_row][player_col] = "D"
         player_row +=1
-        
+
         if player_row == len(total_data):
             return False,direction,player_col,player_row,infinite_loop,False
         current_char = total_data[player_row][player_col]
@@ -115,7 +115,7 @@ def movement2(direction,player_col,player_row,total_data,infinite_loop):
             if total_data[player_row][player_col] == "#":
                 player_row -=1
                 direction = "left"
-                
+
     elif direction == "left":
         total_data[player_row][player_col] = "L"
         player_col -=1
@@ -132,8 +132,8 @@ def movement2(direction,player_col,player_row,total_data,infinite_loop):
             if total_data[player_row][player_col] == "#":
                 player_col +=1
                 direction = "up"
-            
-    return True,direction,player_col,player_row,infinite_loop,False     
+
+    return True,direction,player_col,player_row,infinite_loop,False
 
 def grid(total_data):
     for row,line in enumerate(total_data):
@@ -157,14 +157,14 @@ def checks_loop(direction,player_col,player_row,new_data):
     while in_map and not in_loop and count<=20000:
          #print(count)
          count +=1
-         
+
          in_map,direction,player_col,player_row,infinite_loop,in_loop = movement2(direction,player_col,player_row,new_data,infinite_loop)
          if in_loop:
-             return True 
-    if count >=20000:  
-        return True   
-    return False   
-    
+             return True
+    if count >=20000:
+        return True
+    return False
+
 
 with open(filepath) as f:
     data = f.readlines()
@@ -191,7 +191,7 @@ for line in data:
 while in_map:
     in_map,direction,player_col,player_row = movement(direction,player_col,player_row,total_data)
     #grid(total_data)
-    
+
 #grid(total_data)
 #grid(initial_setup)
 #grid(changed_setup)
