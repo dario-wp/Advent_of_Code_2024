@@ -33,5 +33,5 @@ with open(filepath) as f:
                     partTwo +=1
                     break
             
-print(partOne)
-print(partTwo)
+print(partOne+partTwo)
+

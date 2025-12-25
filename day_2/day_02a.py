@@ -13,12 +13,11 @@ def find_unsafe_index(values):
     while is_safe and (index< len(values)-1):
         if not((values[index] - values[index+1]) in allow_values):
             return False
-        index+=1 
+        index+=1
     return True
 
 partOne = 0
 partTwo = 0
-difference_value = 0
 
 with open(filepath) as f:
     lines = f.readlines()
@@ -28,13 +27,11 @@ with open(filepath) as f:
         if is_safe:
             partOne += 1
         else:
-            temp_values = values[:-1]
-            if find_unsafe_index(temp_values):
-                partTwo +=1
-                print(values)
-                difference_value += 1
-                
-            
+            for x in range(len(values)):
+                temp_values = values[:x] + values[x+1:]
+                if find_unsafe_index(temp_values):
+                    partTwo +=1
+                    break
+
 print(partOne)
-print(partTwo)
-print(difference_value)
+
