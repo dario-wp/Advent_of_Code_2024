@@ -19,59 +19,41 @@ valid_hashtags = []
 # ----------- SECTION OPEN: FUNCTIONS -----------
 def search_values(pattern,all_data,total_columns,total_rows):
     all_data = all_data.replace("\n","")
-    # print(all_data)
-    # print("Rows:", total_rows, " ", "Columns:", total_columns)
     matches = re.findall(pattern, all_data)
+    #print("MATCHES",matches)
     for match in matches:
         all_searched_values.append([match, int(int(all_data.index(match))/total_columns),int(int(all_data.index(match))%total_rows)])
+        #print("ALLVALUES",all_searched_values)
+        #print("all_data1",all_data)
         all_data = all_data.replace(match, ".", 1)
+        #print("all_data2",all_data)
+        #print(match)
     return all_searched_values
 
 def search_pairs(array,value,total_columns,total_rows):
-    #print(array)
     index_to_remove = int(all_searched_values.index(value))
     filtered_arr = array[:index_to_remove] + array[index_to_remove + 1:]
-    # print(filtered_arr)
     pairs =[]
     for filtered_value in filtered_arr:
-        # print("The value",value[0])
-        # print("The value",value)
-        # print("FilteredValue:",filtered_value[0])
-        # print("FilteredValue:",filtered_value)
-        # print(filtered_arr)
-
         if filtered_value[0] == value[0]:
-            # print("The Value: ",value," The FiliteredValue",filtered_value)
             pairs.append([value,filtered_value])
-            # print("current pairs:",pairs)
 
     return pairs
 
 
 def removing_duplicates(total_pairs):
-    unique_pairs = []
-
-    # Remove duplicates using frozensets for immutability
     unique_pairs_set = set()
 
     for sublist in total_pairs:
-        # Convert each sublist to a frozenset of tuples (to make it immutable)
         frozenset_pair = frozenset(tuple(pair) for pair in sublist)
         unique_pairs_set.add(frozenset_pair)
 
-    # Convert the set of unique pairs back to a list
     unique_pairs = [list(pair) for pair in unique_pairs_set]
     unique_pairs =np.array(unique_pairs)
-    # print(unique_pairs)
-
     return unique_pairs
 
 def hashtag_counter(pair,total_columns,total_rows):
-    temp_hashtag_total = 0
     valid_hashtags = []
-    # print(pair)
-    # print("First Pair Colum",pair[0][0],"... First Pair Row",pair[0][1])
-    # print("Second Pair Colum",pair[1][0],"... Second Pair Row",pair[1][1])
     row_difference = int(pair[1][1]) -int(pair[0][1])
     column_difference = int(pair[1][0]) -int(pair[0][0])
     hashtag1 = [int(pair[0][0])+column_difference,int(pair[0][1])+row_difference]
@@ -79,30 +61,16 @@ def hashtag_counter(pair,total_columns,total_rows):
     hashtag3 = [int(pair[1][0])+column_difference,int(pair[1][1])+row_difference]
     hashtag4 = [int(pair[1][0])-column_difference,int(pair[1][1])-row_difference]
     all_hashtags =[hashtag1,hashtag2,hashtag3,hashtag4]
-    # print(all_hashtags)
     first_pair = [int(pair[0][0]), int(pair[0][1])]
     second_pair = [int(pair[1][0]), int(pair[1][1])]
-    # print(first_pair)
-    # print(second_pair)
     for hashtag in all_hashtags:
-        # print("hashtag",hashtag)
-        # print("firstpair",first_pair)
-        # print("secondpair",second_pair)
         if total_columns > hashtag[0] >= 0 and total_rows > hashtag[1] >= 0:
-            if hashtag == first_pair or hashtag== second_pair:
-                # print("DUPLICATE")
-                # print("current hashtag count",temp_hashtag_total)
+            if hashtag == first_pair or hashtag == second_pair:
                 continue
             else:
-                temp_hashtag_total = temp_hashtag_total + 1
                 valid_hashtags.append(hashtag)
-                # print("FOUND NEW HASHTAG")
-                # print("current hashtag count",temp_hashtag_total)
         else:
-            # print("not in boundaries of border")
-            # print("current hashtag count", temp_hashtag_total)
             continue
-        # print("\n")
 
     return valid_hashtags
 # ----------- SECTION CLOSED: FUNCTIONS -----------
@@ -119,12 +87,10 @@ with open(filepath) as file:
     total_columns = len(lines)
 
 for line in lines:
-    # print(line)
     total_rows = len(line)
     line_values = []
     line = line.strip()
     for char in line:
-        #print(char)
         line_values.append(char)
     values.append(line_values)
 # ----------- SECTION CLOSED: OPEN FILE -----------
@@ -141,29 +107,12 @@ for value in all_searched_values:
 new_pairs = removing_duplicates(total_pairs)
 modified_arr = new_pairs[:, :, 1:]
 
-
-# print(modified_arr)
-
-# print("new_pairs",new_pairs)
-# modified_arr = np.sort(modified_arr)
-
 for pair in modified_arr:
     hashtags = []
     hashtags = hashtag_counter(pair,total_columns,total_rows)
-    # print("CURRENT HASHTAGS",hashtags)
     for hashtag in hashtags:
-        # print("HASHTAG",hashtag)
         valid_hashtags.append(hashtag)
-    # print("VALID HASHTAGS",valid_hashtags)
 
-    # print("current total Hashtags=", total)
-
-# print("Rows:",total_rows," ","Columns:",total_columns)
-# print("Total Hashtags=",total)
-print(valid_hashtags)
 unique_arr = [list(item) for item in set(tuple(i) for i in valid_hashtags)]
-print("totalRows",total_rows)
-print("totalcolumsn",total_columns)
-print(unique_arr)
 print("Amount of Unique Hashtags",len(unique_arr))
 # ----------- SECTION CLOSED: THE REAL DEAL -----------

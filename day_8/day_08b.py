@@ -1,9 +1,19 @@
 # ----------- SECTION OPEN: IMPORTS AND VALUES -----------
+import re
 
 filepath = "input.txt"
+pattern = "[a-zA-z0-9]"
 
 # ----------- SECTION CLOSED: IMPORTS AND VALUES -----------
 # ----------- SECTION OPEN: FUNCTIONS -----------
+def search_values(pattern, all_data, total_columns, total_rows):
+    all_searched_values = []
+    matches = re.findall(pattern, all_data)
+    for match in matches:
+        all_searched_values.append([match, all_data.index(match) // total_columns, all_data.index(match) % total_rows])
+        all_data = all_data.replace(match, ".", 1)
+    return all_searched_values
+
 
 def hashtag_counter(pair, total_columns, total_rows):
     valid_hashtags = set()
@@ -24,29 +34,23 @@ def hashtag_counter(pair, total_columns, total_rows):
                 in_boundary = False
 
     return valid_hashtags
-
-
 # ----------- SECTION CLOSED: FUNCTIONS -----------
 # ----------- SECTION OPEN: READ FILE -----------
 # no need to read the file twice...
-all_searched_values = []
+values=[]
 with open(filepath) as file:
     lines = file.readlines()
-    total_rows = len(lines)
-    total_columns = 0
-    for row, line in enumerate(lines):
+    total_rows = len(lines)  # this is actually the number of rows
+    all_data = ''
+    for line in lines:
+        total_columns = len(line)  # this is actually the number of cols - but the inputs are square so it doesn't matter...
         line = line.strip()
-        if row == 0:
-            # only do this once
-            total_columns = len(line)
+        all_data += line  # this does now simply concatenate each line to all_data... without the \n
         if len(line) == total_columns:
-            # we only append lines that have the same length as the first one.
-            for col, char in enumerate(line):
-                # find the antenna positions
-                if char != '.':
-                    all_searched_values.append([char, row, col])
+            values.append(list(line))
 # ----------- SECTION CLOSED: OPEN FILE -----------
 # ----------- SECTION OPEN: THE REAL DEAL -----------
+all_searched_values = search_values(pattern, all_data, total_columns, total_rows)
 
 total_pairs = []
 for index, value in enumerate(all_searched_values[:-1]):
@@ -56,7 +60,8 @@ for index, value in enumerate(all_searched_values[:-1]):
 
 valid_hashtags = set()
 for pair in total_pairs:
-    valid_hashtags = valid_hashtags.union(hashtag_counter(pair, total_columns, total_rows))
+    valid_hashtags=valid_hashtags.union(hashtag_counter(pair, total_columns, total_rows))
 
-print("all valid hashtags", valid_hashtags)
-print("Amount of Unique Hashtags", len(valid_hashtags))  # ----------- SECTION CLOSED: THE REAL DEAL -----------
+#print("all valid hashtags",valid_hashtags)
+print("Amount of Unique Hashtags", len(valid_hashtags))
+# ----------- SECTION CLOSED: THE REAL DEAL -----------
